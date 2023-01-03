@@ -125,7 +125,7 @@ where
 
     let name = config.primary_keypair.public().clone();
 
-    tracing::info!("Starting up narwhal");
+    tracing::info!("Starting Narwhal with store path {}", store_path.display());
 
     // Start Narwhal Primary with configuration
     let primary_node = PrimaryNode::new(
