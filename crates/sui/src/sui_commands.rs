@@ -132,6 +132,7 @@ impl SuiCommand {
                     .unwrap_or(sui_config_dir()?.join(SUI_NETWORK_CONFIG));
                 let network_config: NetworkConfig = PersistedConfig::read(&network_config_path)
                     .map_err(|err| {
+                        println!("err+{}", &err);
                         err.context(format!(
                             "Cannot open Sui network config file at {:?}",
                             network_config_path

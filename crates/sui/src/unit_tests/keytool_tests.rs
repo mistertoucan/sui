@@ -302,3 +302,15 @@ fn test_keytool_bls12381() -> Result<(), anyhow::Error> {
     .execute(&mut keystore)?;
     Ok(())
 }
+
+#[test]
+fn test_keytool_multisig_address() -> Result<(), anyhow::Error> {
+    // TODO
+    Ok(())
+}
+
+#[test]
+fn test_keytool_combine_multisig() -> Result<(), anyhow::Error> {
+    // TODO
+    Ok(())
+}

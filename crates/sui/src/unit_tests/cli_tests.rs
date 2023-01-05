@@ -1200,3 +1200,22 @@ async fn test_serialize_tx() -> Result<(), anyhow::Error> {
     .await?;
     Ok(())
 }
+
+#[sim_test]
+async fn test_execute_multisig_tx() -> Result<(), anyhow::Error> {
+    // TODO
+
+    // let mut test_cluster = TestClusterBuilder::new().build().await?;
+    // let context = &mut test_cluster.wallet;
+    // let mut txns = make_transactions_with_wallet_context(context, 1).await;
+    // let txn = txns.swap_remove(0);
+
+    // let (tx_data, signature) = txn.to_tx_bytes_and_signature();
+    // SuiClientCommands::ExecuteSignedTx {
+    //     tx_bytes: tx_data.encoded(),
+    //     signature: signature.encoded(),
+    // }
+    // .execute(context)
+    // .await?;
+    Ok(())
+}
