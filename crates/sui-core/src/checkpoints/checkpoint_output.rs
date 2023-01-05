@@ -78,7 +78,10 @@ impl<T: SubmitToConsensus + ReconfigurationInitiator> CheckpointOutput
             .submit_to_consensus(&transaction, epoch_store)
             .await?;
         if let Some(checkpoints_per_epoch) = self.checkpoints_per_epoch {
-            if checkpoint_seq != 0 && checkpoint_seq % checkpoints_per_epoch == 0 {
+            if checkpoint_seq != 0
+                && ((epoch_store.epoch() == 0 && checkpoint_seq % 500 == 0)
+                    || (epoch_store.epoch() > 0 && checkpoint_seq % checkpoints_per_epoch == 0))
+            {
                 self.sender.close_epoch(epoch_store)?;
             }
         }
