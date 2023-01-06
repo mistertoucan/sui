@@ -159,6 +159,7 @@ impl Operations {
                 SuiTransactionKind::Pay(tx) => (OperationType::Pay, json!(tx)),
                 SuiTransactionKind::PayAllSui(tx) => (OperationType::PayAllSui, json!(tx)),
                 SuiTransactionKind::ChangeEpoch(tx) => (OperationType::EpochChange, json!(tx)),
+                SuiTransactionKind::Genesis(tx) => (OperationType::Genesis, json!(tx)),
                 SuiTransactionKind::PaySui(_) => unreachable!(),
             };
             vec![Operation::generic_op(type_, status, sender, metadata)]
