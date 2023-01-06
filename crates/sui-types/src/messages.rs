@@ -6,8 +6,7 @@ use crate::certificate_proof::CertificateProof;
 use crate::committee::{EpochId, StakeUnit};
 use crate::crypto::{
     sha3_hash, AuthoritySignInfo, AuthoritySignature, AuthorityStrongQuorumSignInfo,
-    Ed25519SuiSignature, EmptySignInfo, Signature, SignatureScheme, SuiSignature,
-    SuiSignatureInner, ToFromBytes,
+    Ed25519SuiSignature, EmptySignInfo, Signature, SuiSignature, SuiSignatureInner, ToFromBytes,
 };
 use crate::gas::GasCostSummary;
 use crate::intent::{Intent, IntentMessage};
@@ -956,20 +955,6 @@ impl Transaction {
 
     pub fn from_data(data: TransactionData, intent: Intent, signature: Signature) -> Self {
         Self::new(SenderSignedData::new(data, intent, signature))
-    }
-
-    // TODO(joyqvq): remove and prefer to_tx_bytes_and_signature()
-    pub fn to_network_data_for_execution(&self) -> (Base64, SignatureScheme, Base64, Base64) {
-        (
-            Base64::from_bytes(
-                bcs::to_bytes(&self.intent_message.value)
-                    .unwrap()
-                    .as_slice(),
-            ),
-            self.tx_signature.scheme(),
-            Base64::from_bytes(self.tx_signature.signature_bytes()),
-            Base64::from_bytes(self.tx_signature.public_key_bytes()),
-        )
     }
 
     pub fn to_tx_bytes_and_signature(&self) -> (Base64, Base64) {

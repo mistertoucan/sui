@@ -23,7 +23,6 @@ use sui_types::base_types::{
     ObjectID, SequenceNumber, SuiAddress, TransactionDigest, TxSequenceNumber,
 };
 use sui_types::committee::EpochId;
-use sui_types::crypto::SignatureScheme;
 use sui_types::event::EventID;
 use sui_types::messages::CommitteeInfoResponse;
 use sui_types::messages::ExecuteTransactionRequestType;
@@ -554,31 +553,6 @@ pub trait EventReadApi {
 #[open_rpc(namespace = "sui", tag = "APIs to execute transactions.")]
 #[rpc(server, client, namespace = "sui")]
 pub trait TransactionExecutionApi {
-    /// Execute the transaction and wait for results if desired.
-    /// Request types:
-    /// 1. WaitForEffectsCert: waits for TransactionEffectsCert and then return to client.
-    ///     This mode is a proxy for transaction finality.
-    /// 2. WaitForLocalExecution: waits for TransactionEffectsCert and make sure the node
-    ///     executed the transaction locally before returning the client. The local execution
-    ///     makes sure this node is aware of this transaction when client fires subsequent queries.
-    ///     However if the node fails to execute the transaction locally in a timely manner,
-    ///     a bool type in the response is set to false to indicated the case.
-    // TODO(joyqvq): remove this and rename executeTransactionSerializedSig to executeTransaction
-    #[method(name = "executeTransaction")]
-    async fn execute_transaction(
-        &self,
-        /// BCS serialized transaction data bytes without its type tag, as base-64 encoded string.
-        tx_bytes: Base64,
-        /// Flag of the signature scheme that is used.
-        sig_scheme: SignatureScheme,
-        /// Signature committed to the intent message of the transaction data, as base-64 encoded string.
-        signature: Base64,
-        /// Signer's public key, as base-64 encoded string.
-        pub_key: Base64,
-        /// The request type.
-        request_type: ExecuteTransactionRequestType,
-    ) -> RpcResult<SuiExecuteTransactionResponse>;
-
     #[method(name = "executeTransactionSerializedSig")]
     async fn execute_transaction_serialized_sig(
         &self,
