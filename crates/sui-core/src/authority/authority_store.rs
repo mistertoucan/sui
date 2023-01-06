@@ -180,8 +180,15 @@ impl AuthorityStore {
             pending_certificates.len()
         );
         for digest in pending_certificates {
-            debug!("Reverting {:?} at the end of epoch", digest);
-            self.revert_state_update(&digest).await?;
+            if epoch_store.tx_checkpointed_in_current_epoch(&digest)? {
+                debug!(
+                    "Not reverting {:?} at the end of epoch since it's already checkpointed",
+                    digest
+                );
+            } else {
+                debug!("Reverting {:?} at the end of epoch", digest);
+                self.revert_state_update(&digest).await?;
+            }
         }
         debug!("All uncommitted local transactions reverted");
         Ok(())
@@ -1234,10 +1241,12 @@ impl AuthorityStore {
             ($object_keys: expr) => {
                 self.perpetual_tables
                     .objects
-                    .multi_get($object_keys)?
+                    .multi_get($object_keys.clone())?
                     .into_iter()
-                    .filter_map(|obj_opt| {
-                        let obj = obj_opt.expect("Older object version not found");
+                    .zip($object_keys)
+                    .filter_map(|(obj_opt, key)| {
+                        let obj =
+                            obj_opt.expect(&format!("Older object version not found: {:?}", key));
 
                         if obj.is_immutable() {
                             return None;

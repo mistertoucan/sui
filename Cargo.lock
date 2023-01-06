@@ -10244,6 +10244,7 @@ dependencies = [
  "rocksdb",
  "rstest",
  "serde 1.0.151",
+ "sui-macros",
  "syn 1.0.107",
  "tap",
  "tempfile",
